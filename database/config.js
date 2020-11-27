@@ -11,7 +11,13 @@ const dbConnection = async ()=>{ // el asyn devuelve una promesa
         await mongoose.connect(process.env.DB_CNN,
         {useNewUrlParser: true, 
          useUnifiedTopology: true,
-         useCreateIndex:true
+         useCreateIndex:true,
+         useNewUrlParser: true, 
+         useUnifiedTopology: true,
+         useCreateIndex: true,
+         useFindAndModify: false
+
+
         });
         console.log('DB online');
     } catch (error) {

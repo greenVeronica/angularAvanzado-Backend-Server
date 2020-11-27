@@ -8,7 +8,6 @@ const cors = require('cors');
 
 
 
-
 /// pass mongo eAcVmhCNq6V1xjyn
 //// usuario mongo vgreen
 //mongodb+srv://vgreen:eAcVmhCNq6V1xjyn@cluster0.zvstw.mongodb.net/hospitaldb
@@ -20,11 +19,21 @@ const {dbConnection}=require('./database/config.js');
 
 // crear un servidor de express
 const app = express();
+
 // configuro cors mediante un middleware el use
 app.use(cors())
+
 // llamamos la base de datos
  dbConnection();
+ // lectura y parseo del body para las peticiones
+app.use(express.json());
+
 // Rutas
+app.use('/api/usuarios',require('./routes/usuarios')); // la peticion a /api/usuarios sera respondida por lo que esta en require('./routes/usuarios'
+app.use('/api/login',require('./routes/auth')); // la peticion a /api/usuarios sera respondida por lo que esta en require('./routes/usuarios'
+
+/*
+primer ejemplo
 app.get('/',(req,resp)=>{
     // cuando se indica slash / se ejecutara el callback que va como parametro
     // la respuesta se envia con el resp
@@ -36,7 +45,18 @@ app.get('/',(req,resp)=>{
         }
     )
 })
+*/
+// llamada a los usuarios
+// lo vamos a sacar de aca porque se puede volver muy grande
+// crearemos routes/
+/*ESTO ES LA RUTA
+app.get('/api/usuarios',(req,resp)=>{
+    ESTO ES LO QUE DEVUELE EL CONTROLADOR
+   .........
+})
 
+
+// Pruebas
 app.get('/prueba',(req,resp)=>{
     // cuando se indica slash / se ejecutara el callback que va como parametro
     // la respuesta se envia con el resp
@@ -49,7 +69,7 @@ app.get('/prueba',(req,resp)=>{
     )
 })
 
-
+*/
 
 
 // levantamos el servidor
