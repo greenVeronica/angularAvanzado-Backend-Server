@@ -12,11 +12,36 @@ tendra todas las funciones y callback
 que responden a las peticiones*/
 
 const getUsuarios=async(req,resp)=>{
+    const desde =Number(req.query.desde) || 0;
+    /*DOS PROMESAS SE JUNTAN EN UNA
+    // param desde que viene opcional en el ruteo
+         // si no es Number le asigno 0
+   
+
+
+    console.log(desde);
     // voy a buscar la lista de usuarios en la base
     // agregamos await, es necesario esperar que responda
    //  const usuario = await Usuario.find();  // trae todos los campos
-    const usuario = await Usuario.find({},'nombre email role google');  
-    // traigo solo nombre, email.....
+    const usuario = await Usuario.find({},'nombre email role google')   // traigo solo nombre, email.....
+                                 .skip(desde)// que se saltee y comience desde
+                                 .limit(5); // hasta cuantos reg muestra
+
+
+    // cuantos registros
+    const total = await Usuario.count();
+*/
+ const [usuario, total] =  await Promise.all([ // cada promesa se ejecuta simultaneamente
+        // primer promesa
+        Usuario.find({},'nombre email role google img')  
+                .skip(desde)
+                .limit(5),
+        // segunda promesa  
+        Usuario.countDocuments()      
+    ]); //devuelve un arreglo con los resultados de cada promesa
+    // usando la destructuracion obtenemos los dos resultados en las variabes
+    // usuairo y total
+
 
     // en el validar-jwt agregamos que al validar el token agregue l req el uid
     // lo verificamos y lo mandamos en el resp
@@ -28,6 +53,7 @@ const getUsuarios=async(req,resp)=>{
             ok:true,
             msg:'Lista de usuarios',
             usuario,
+            total,
             uid:req.uid
         }
     )
@@ -63,7 +89,7 @@ const crearUsuario=async(req,resp=response)=>{
 
     // lo grabamos en en mongo con save que devuelve una promesa
     // necesito que termine para seguir
-        await usuario.save()
+        await usuario.save();
     //  generar token - JWT
       const token =await generarJWT(usuario.id);  
     resp.json(

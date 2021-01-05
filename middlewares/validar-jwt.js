@@ -8,7 +8,7 @@ const validarJWT= (req,resp=response,next)=>{
     // leer el token
     const token = req.header('x-token');
     
-    console.log(token);
+  //  console.log(token);
     if (!token){
         return resp.status(401).json({
             ok:false,
@@ -22,12 +22,14 @@ const validarJWT= (req,resp=response,next)=>{
         // si lo anterior anda bien va directo al console.log sino
         // va al catch
 
-        console.log(uid);
+       // console.log(uid);
 
         // como anduvo ok, le puedo agregar al request que vino
         req.uid=uid;
         // anduvo todo bien , seguimos
+      
         next();
+        
         
     } catch (error) {
         return resp.status(401).json({

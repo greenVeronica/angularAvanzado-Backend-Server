@@ -28,10 +28,11 @@ const router=Router();
     )
 })  ESTO SE SIMPLIFICA*/
 // leer usuarios
-router.get('/',validarJWT,getUsuarios);// el seg. hago referencia al callback, no lo ejecuto
+router.get('/',getUsuarios);// el seg. hago referencia al callback, no lo ejecuto
 // crear usuarios // aca usaremos el express validator
 router.post('/',
 [// middlewares que seran validators 
+    
     check('nombre','El nombre es obligatorio').not().isEmpty(), // chequea que el nombre no sea vacio
     check('password','La password es obligatorio').not().isEmpty(), // chequea que el password no sea vacio
     check('email','el email es incorrecto').isEmail(),

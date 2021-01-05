@@ -30,10 +30,14 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/usuarios',require('./routes/usuarios')); // la peticion a /api/usuarios sera respondida por lo que esta en require('./routes/usuarios'
-app.use('/api/login',require('./routes/auth')); // la peticion a /api/usuarios sera respondida por lo que esta en require('./routes/usuarios'
+app.use('/api/hospitales',require('./routes/hospitales.js')); // la peticion a /api/hospitales sera respondida por lo que esta en require('./routes/hospitales'
+app.use('/api/login',require('./routes/auth')); // la peticion a /api/usuarios sera respondida por lo que esta en require('./routes/login'
+app.use('/api/medicos',require('./routes/medicos')); // la peticion a /api/usuarios sera respondida por lo que esta en require('./routes/login'
+app.use('/api/todo',require('./routes/busquedas')); 
+app.use('/api/uploads',require('./routes/uploads')); 
 
 /*
-primer ejemplo
+primer ejemplo  
 app.get('/',(req,resp)=>{
     // cuando se indica slash / se ejecutara el callback que va como parametro
     // la respuesta se envia con el resp
