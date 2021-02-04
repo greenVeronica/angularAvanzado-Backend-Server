@@ -15,6 +15,7 @@ const cors = require('cors');
 const {dbConnection}=require('./database/config.js');
 
 
+
 //console.log(process.env); // aca trae todos la variables de entorno de node , a lo ultimo agrega Port del archivo.env
 
 // crear un servidor de express
@@ -25,6 +26,11 @@ app.use(cors())
 
 // llamamos la base de datos
  dbConnection();
+
+ // directorio publico
+app.use(express.static('public'));
+
+
  // lectura y parseo del body para las peticiones
 app.use(express.json());
 
@@ -35,6 +41,7 @@ app.use('/api/login',require('./routes/auth')); // la peticion a /api/usuarios s
 app.use('/api/medicos',require('./routes/medicos')); // la peticion a /api/usuarios sera respondida por lo que esta en require('./routes/login'
 app.use('/api/todo',require('./routes/busquedas')); 
 app.use('/api/uploads',require('./routes/uploads')); 
+
 
 /*
 primer ejemplo  
