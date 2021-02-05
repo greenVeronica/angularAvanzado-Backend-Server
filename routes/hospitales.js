@@ -10,7 +10,7 @@ const router=Router();
  
 
 // leer usuarios
-router.get('/',getHospitales);// el seg. hago referencia al callback, no lo ejecuto
+router.get('/',[validarJWT,validarCampos],getHospitales);// el seg. hago referencia al callback, no lo ejecuto
 // crear usuarios // aca usaremos el express validator
 router.post('/',
 [// middlewares que seran validators 
@@ -22,10 +22,13 @@ router.post('/',
 
 // actualizo el usuario , le paso el id 
 router.put('/:id',[
-   
+    validarJWT,
+     // ademas devuelve el uid
+     check('nombre','El nombre es obligatorio').not().isEmpty(),
+     validarCampos
 ],actualizarHospital);
 
-router.delete('/:id',//validarJWT,
+router.delete('/:id',validarJWT,
 borrarHospital);
 
 module.exports=router;

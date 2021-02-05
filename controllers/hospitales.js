@@ -6,6 +6,7 @@ const {response} = require('express'); // puede servir de ayuda al escribir las 
 const Hospital=require('../models/hospital');
 const bcryptjs=require('bcryptjs');
 const {generarJWT}=require('../helpers/jwt');
+const hospital = require('../models/hospital');
 
 
 
@@ -58,28 +59,81 @@ const crearHospital=async(req,resp=response)=>{
 }
 
 const actualizarHospital=async(req,resp=response)=>{
+    // obtenemos el id del hospital que se envio por la ruta
+    const id = req.params.id;
+    const uid = req.uid; // para saber el usuario que esta actualizando
 
-    resp.json(
-        {
-            ok:true,
-            msg:'Actualizacio de Hospital',
-            Hospital,
-           // uid:req.uid
+    try {
+
+        const HospitalDb= await Hospital.findById(id);
+        if(!HospitalDb){ // no existe el hospital
+         return   resp.status(404).json(
+                {
+                    ok:false,
+                    msg:'No existe el hospital',
+                  
+                }
+            )
         }
-    )
+        // actualizamos el hospital
+         // hospitalDB.nombre = req.body.nombre; solo sirve si es un solo campos sino es engorroso
+         const cambiosHospital = {
+             ...req.body, // traigo todos los campos del body
+            usuario:uid}; // agrego el usuario
+        //  efectivamente ahora actualizamos el hospital
+        const hospitalActualizado = await Hospital.findByIdAndUpdate(id,cambiosHospital,{new:true });
+        resp.json(
+            {
+                ok:true,
+                hospitalActualizado
+                
+               // uid:req.uid
+            }
+        )
+
+    } catch (error) {
+        resp.status(500).json({
+            ok:false,
+            msg:'error en actualizacion de hospital'
+        })
+    }
+ 
    
 }
 
 const borrarHospital=async(req,resp=response)=>{
+  // obtenemos el id del hospital que se envio por la ruta
+  const id = req.params.id;
+  try {
 
-    resp.json(
-        {
-            ok:true,
-            msg:'borrado de Hospital',
-            Hospital,
-           // uid:req.uid
-        }
-    )
+      const HospitalDb= await Hospital.findById(id);
+      if(!HospitalDb){ // no existe el hospital
+       return   resp.status(404).json(
+              {
+                  ok:false,
+                  msg:'No existe el hospital',
+                
+              }
+          )
+      }
+
+      //  efectivamente ahora borramos el hospital
+       await Hospital.findByIdAndDelete(id);
+      resp.json(
+          {
+              ok:true,
+              msg:'se borro el hospital'
+              
+             // uid:req.uid
+          }
+      )
+
+  } catch (error) {
+      resp.status(500).json({
+          ok:false,
+          msg:'error en borrado de hospital'
+      })
+  }
    
 }
 

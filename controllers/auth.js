@@ -99,8 +99,29 @@
         }
         
     }
+    // tomaremos un token y si es valido 
+    // generamos uno nuevo para el uid que esta 
+    // embebido en el primer token
+    const renewToken=async(req,resp=response)=>{
+      // si es valido el token que se envio como header
+      // la funcion validarJWT tambien devuelve el uid 
+      // del toquen valido en el request
+      const uid=req.uid
+      // si llegamos hasta aca es que tenemos el usuarioid
+      const token =await generarJWT(uid); // renuevo y genero el token
+        resp.json(
+            {
+                ok:true,
+                token, // token nuevo
+                uid
+
+              
+            }
+        )
+    }
 
     module.exports={
         login,
-        googleSingIn
+        googleSingIn,
+        renewToken
     }

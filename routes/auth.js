@@ -3,9 +3,11 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
 const{validarCampos} = require('../middlewares/validar-campos');
+const{validarJWT} = require('../middlewares/validar-jwt');
+
 
 const router=Router();
-const{login,googleSingIn} = require('../controllers/auth')
+const{login,googleSingIn,renewToken} = require('../controllers/auth')
 
 
 router.post('/', 
@@ -30,5 +32,12 @@ validarCampos
 // controladores
 ,googleSingIn
 );
+// validar el token 
+router.get('/renew', 
+validarJWT  // necesitara un token correcto
+,renewToken
+);
+
+
 
 module.exports=router;

@@ -28,7 +28,7 @@ const router=Router();
     )
 })  ESTO SE SIMPLIFICA*/
 // leer usuarios
-router.get('/',getUsuarios);// el seg. hago referencia al callback, no lo ejecuto
+router.get('/',validarJWT,getUsuarios);// el seg. hago referencia al callback, no lo ejecuto
 // crear usuarios // aca usaremos el express validator
 router.post('/',
 [// middlewares que seran validators 
